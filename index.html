@@ -1,22 +1,179 @@
+<!DOCTYPE html>
 <html>
-    <button>vb</button>
+<head>
+  <title>Click Counter</title>
+  <style>
+    
+    progress::-webkit-progress-value {
+      margin-bottom: 150px;
+      background-color: aqua;
+      border-radius: 10px;
+
+    }
+
+    
+    body {
+      background-color: #0e0b18;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    button{
+      text-align: center;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-tap-highlight-color: transparent;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+      background-color: rgb(56, 56, 105);
+
+    }
+    #click-me {
+      margin-top: 25PX;
+      border-radius:100px;
+      width:200px;
+      height:200px;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 100px;
+      
+      cursor: pointer;
+    }
+    #counter {
+      font-size: 48px;
+      color: #6c8399;
+      text-align: center;
+      margin-top: 20px;
+    
+    }
+    #plus{
+      height: 50px;
+      width: 105px;
+      font-size: 20px;
+      color:white;
+    }#avto{
+      height: 50px;
+      width: 105px;
+      font-size: 20px;
+      color:white;
+    }
+    .push{
+        animation: touch 0.1s linear;
+    }
+    @keyframes touch{
+        50%{
+            font-size: 75px;
+        }
+        80%{
+            font-size: 100px;
+        }
+    }
+  </style>
+  <div>
+    <button id = "plus">+1(150)</button>
+    <button id ="avto">auto(450)</button>
+  </div>
+</head>
+<body>
+  <progress id="pr" value="0" max="50"></progress>
+  <button id="click-me">😀</button>
+  <div id="counter">0</div>
+  
+  <script>
+    
+    var avtrue = 0;
+    var click = 1;
+    var count1 = 0;
+    var cn = 0
+    var pl = document.getElementById("plus");
+    var cl = document.getElementById("avto");
+    var pr = document.getElementById("pr");
+    var button = document.getElementById("click-me");
+    var counter = document.getElementById("counter");
+    function setCookie(name, value) {
+      document.cookie = name + "=" + value;
+
+    }
+    function getCookie(name) {
+      var r = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+      if (r) return r[2];
+      else return "";
+    }
+    cn = Number(getCookie("cn"));
+    count1 = Number(getCookie("count1"));
+    button.innerHTML = getCookie("but");
+    click = Number(getCookie("click"))
+    avtrue = Number(getCookie("AV"))  
+    button.addEventListener("click", function() {
+      count1=count1 + click;
+      cn=cn+click;
+      pr.value = count1;
+      counter.innerHTML = cn;
+      setCookie("count1",count1)
+      setCookie("cn",cn)
+
+
+      if (button.classList != "push"){
+          button.classList.add("push")
+      }
+      setTimeout(function(){
+          button.classList.remove("push")
+      },300)
+      if (pr.value >= 50){
+        pr.value = 0;
+        count1 = 0
+      }
+      if(cn >50){
+
+        button.innerHTML = "😋"
+        setCookie("but",button.innerHTML)
+      }
+      if(cn >100){
+
+        button.innerHTML = "😎"
+        setCookie("but",button.innerHTML)
+      }
+      if(cn >150){
+
+        button.innerHTML = "🤑"
+        setCookie("but",button.innerHTML)
+      }
+      if(cn >200){
+
+        button.innerHTML = "🤯"
+        setCookie("but",button.innerHTML)
+      }
+    });
+    pl.addEventListener("click",function(){
+        if(cn > 150){
+            click++;
+            cn = cn-150;
+            counter.innerHTML = cn
+            setCookie("click",click)
+        }
+        
+    });
+    cl.addEventListener("click",function(){
+        if(cn > 450&& avtrue != 1){
+            avtrue = 1
+            cn = cn - 450;
+            setCookie("AV",avtrue)
+        }
+    })
+    let lop = setInterval(function(){
+        if (avtrue == 1){
+            cn++;
+            count1++;
+            counter.innerHTML = cn;
+            pr.value = count1
+            setCookie("count1",count1)
+      setCookie("cn",cn)
+        }
+    },1000)
+  </script>
+</body>
 </html>
-<script type="text/javascript">
-  function setCookie(name, value) {
-    document.cookie = name + "=" + value;
-  }
-  function getCookie(name) {
-    var r = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
-    if (r) return r[2];
-    else return "";
-  }
-  function deleteCookie(name) {
-    var date = new Date(); // Берём текущую дату
-    date.setTime(date.getTime() - 1); // Возвращаемся в "прошлое"
-    document.cookie = name += "=; expires=" + date.toGMTString(); // Устанавливаем cookie пустое значение и срок действия до прошедшего уже времени
-  }
-  setCookie("firstname", "Вася"); // Устанавливаем cookie
-  alert(getCookie("firstname")); // Выводим cookie
-  deleteCookie("firstname"); // Удаляем cookie
-  alert(getCookie("firstname")); // Убеждаемся, что ничего не осталось
-</script>
